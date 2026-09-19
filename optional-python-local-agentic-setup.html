@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Optional module: how to get a professional-level local coding environment integrated with GitHub and Codex.">
+<title>Optional Module: Python Local Agentic Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{color-scheme:light dark}
+  html,body{margin:0}
+  [hidden]{display:none!important}
+  :root{
+    --paper:#F3F5F2; --card:#FFFFFF; --sunk:#EAEEE9;
+    --ink:#171C19; --ink-soft:#54605A; --ink-faint:#7C867F;
+    --rule:#D9DED8; --rule-firm:#BFC7BE;
+    --go:#1E6B48; --go-wash:#E2EEE7;
+    --mark:#2C4A9A;
+    --f-display:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --f-body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#12150F; --card:#191D18; --sunk:#20251F;
+      --ink:#E8EBE6; --ink-soft:#A5AFA6; --ink-faint:#7D877E;
+      --rule:#2B322B; --rule-firm:#3C453C;
+      --go:#67C79A; --go-wash:#16281F;
+      --mark:#8FAAEE;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--f-body);font-size:16.5px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    display:flex;min-height:100vh;align-items:center;justify-content:center;
+    padding:32px 20px;
+  }
+  h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.18;letter-spacing:-0.012em}
+  a{color:var(--mark)}
+  .card{
+    max-width:680px;width:100%;
+    background:var(--card);border:1px solid var(--rule);border-radius:8px;
+    padding:40px clamp(24px,5vw,48px);
+  }
+  h3{font-family:var(--f-display);font-size:17px;font-weight:600;margin:30px 0 0;letter-spacing:-0.008em}
+  ol.steps{counter-reset:s;list-style:none;margin:18px 0 0;padding:0;text-align:left}
+  ol.steps>li{counter-increment:s;position:relative;padding:0 0 16px 38px;font-size:15.5px}
+  ol.steps>li::before{
+    content:counter(s);position:absolute;left:0;top:1px;
+    width:23px;height:23px;border-radius:50%;
+    background:var(--card);border:1px solid var(--rule-firm);color:var(--ink-soft);
+    font-family:var(--f-mono);font-size:12px;font-weight:500;
+    display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps>li::after{content:"";position:absolute;left:11px;top:28px;bottom:2px;width:1px;background:var(--rule)}
+  ol.steps>li:last-child{padding-bottom:0}
+  ol.steps>li:last-child::after{display:none}
+  ol.steps p+p{margin-top:6px;font-size:14.5px}
+  code,kbd{font-family:var(--f-mono);font-size:0.875em}
+  kbd{border:1px solid var(--rule-firm);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--sunk);white-space:nowrap}
+  .ui{font-weight:600;background:var(--sunk);padding:1px 5px;border-radius:3px}
+  .warn{
+    margin-top:22px;border:1px solid #A8431B;border-radius:4px;
+    background:color-mix(in srgb,#A8431B 10%,var(--card));
+    padding:14px 16px;text-align:left;font-size:14.5px;color:var(--ink-soft);
+  }
+  .warn .lab{
+    display:block;margin-bottom:5px;font-family:var(--f-display);font-size:11px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.1em;color:#A8431B;
+  }
+  hr.div{border:0;border-top:1px solid var(--rule);margin:32px 0 0}
+  .eyebrow{
+    font-family:var(--f-display);font-size:11.5px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--go);
+  }
+  h1{font-size:clamp(24px,4.6vw,34px);font-weight:700;margin-top:10px;letter-spacing:-0.024em}
+  .lede{margin-top:14px;font-size:17px;color:var(--ink-soft)}
+  p{margin:0}
+  p+p{margin-top:14px;font-size:15.5px;color:var(--ink-soft)}
+  .cta{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    margin-top:28px;padding:15px 22px;
+    background:var(--go);color:#fff;text-decoration:none;
+    font-family:var(--f-display);font-weight:600;font-size:15.5px;
+    border-radius:5px;text-align:center;
+  }
+  .cta:hover{opacity:.92}
+  .url{
+    display:block;margin-top:10px;text-align:center;
+    font-family:var(--f-mono);font-size:13px;color:var(--ink-faint);
+    word-break:break-all;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <span class="eyebrow">Optional Module</span>
+    <h1>Python Local Agentic Setup</h1>
+    <p class="lede">Want to go beyond the browser? Here's how to get a professional-level coding environment that runs locally on your own laptop and is fully integrated with GitHub and Codex.</p>
+
+    <h3>Step 1 — Install Python itself</h3>
+    <ol class="steps">
+      <li>
+        <p>Go to <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org/downloads</a> and download the installer for your operating system.</p>
+      </li>
+      <li>
+        <p><strong>Windows:</strong> run the installer and tick <span class="ui">Add python.exe to PATH</span> at the bottom of the first screen before clicking Install.</p>
+        <p><strong>Mac:</strong> run the installer with the default options — Python installs to the system PATH automatically.</p>
+      </li>
+      <li>
+        <p>Open a fresh terminal (close and reopen VS Code, or any terminal window) and type <code>python --version</code>. It should print a version number, like <code>Python 3.13.2</code>.</p>
+      </li>
+    </ol>
+
+    <div class="warn">
+      <span class="lab">The one that catches everyone</span>
+      On Windows, forgetting to tick <span class="ui">Add python.exe to PATH</span> is the single most common failure. If <code>python --version</code> says the command isn't recognized, re-run the installer, choose <span class="ui">Modify</span>, and turn that option on.
+    </div>
+
+    <h3>Step 2 — Connect it to VS Code</h3>
+    <ol class="steps">
+      <li><p>In VS Code, open the Extensions view and install <strong>Python</strong> (by Microsoft). It pulls in Pylance automatically.</p></li>
+      <li><p>Open your project folder, then open (or create) a <code>.py</code> file. Click the interpreter name in the bottom-right status bar and pick the Python version you just installed.</p></li>
+      <li><p>Click the ▶ <span class="ui">Run</span> button in the top-right corner of the editor. A terminal panel opens at the bottom and shows your program's output — that's Python actually executing, not just Codex reading the file.</p></li>
+    </ol>
+
+    <hr class="div">
+
+    <p>Once Python runs locally, the rest of the professional setup — Git, GitHub, and Codex all working together on your machine — is exactly what the <strong>Zero to Shared Code</strong> guide walks you through, from an empty laptop to a link you can share.</p>
+    <a class="cta" href="https://rebeccajallen.github.io/zero-to-shared-code/">Open the setup guide →</a>
+    <span class="url">https://rebeccajallen.github.io/zero-to-shared-code/</span>
+  </div>
+</body>
+</html>
