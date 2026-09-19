@@ -7,8 +7,7 @@ step so nobody has to guess whether it worked.
 Written for K–12 teachers learning to teach computer science, but it assumes nothing
 beyond being able to download a file.
 
-**Live site:** https://YOUR-USERNAME.github.io/zero-to-shared-code/
-*(replace with your own address once you've done the steps below)*
+**Live site:** https://rebeccajallen.github.io/zero-to-shared-code/
 
 ---
 
