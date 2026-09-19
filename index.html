@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A six-part setup walkthrough taking complete beginners from an empty laptop to a GitHub link they can share.">
+<style>
+  :root{color-scheme:light dark}
+  html,body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Zero to Shared Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#F3F5F2;
+  --card:#FFFFFF;
+  --sunk:#EAEEE9;
+  --ink:#171C19;
+  --ink-soft:#54605A;
+  --ink-faint:#7C867F;
+  --rule:#D9DED8;
+  --rule-firm:#BFC7BE;
+  --go:#1E6B48;
+  --go-wash:#E2EEE7;
+  --flag:#A8431B;
+  --flag-wash:#F6E7DF;
+  --mark:#2C4A9A;
+  --hold:#7A5A12;
+  --hold-wash:#F4EDDC;
+
+  --f-display:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --f-body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+  --measure:66ch;
+  --gut:20px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#12150F;
+    --card:#191D18;
+    --sunk:#20251F;
+    --ink:#E8EBE6;
+    --ink-soft:#A5AFA6;
+    --ink-faint:#7D877E;
+    --rule:#2B322B;
+    --rule-firm:#3C453C;
+    --go:#67C79A;
+    --go-wash:#16281F;
+    --flag:#E08A5F;
+    --flag-wash:#2A1C14;
+    --mark:#8FAAEE;
+    --hold:#D9B65E;
+    --hold-wash:#26200F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12150F;
+  --card:#191D18;
+  --sunk:#20251F;
+  --ink:#E8EBE6;
+  --ink-soft:#A5AFA6;
+  --ink-faint:#7D877E;
+  --rule:#2B322B;
+  --rule-firm:#3C453C;
+  --go:#67C79A;
+  --go-wash:#16281F;
+  --flag:#E08A5F;
+  --flag-wash:#2A1C14;
+  --mark:#8FAAEE;
+  --hold:#D9B65E;
+  --hold-wash:#26200F;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:16.5px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.18;letter-spacing:-0.012em}
+p{margin:0}
+a{color:var(--mark);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--go);outline-offset:2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:0.875em}
+
+/* ---------- top bar ---------- */
+.bar{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:20;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);
+}
+.bar-in{
+  max-width:1080px;margin:0 auto;
+  padding:9px var(--gut);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.bar-name{
+  font-family:var(--f-display);font-weight:700;font-size:14px;
+  letter-spacing:-0.01em;margin-right:auto;
+}
+.bar-name span{color:var(--ink-faint);font-weight:500}
+
+.ostoggle{display:flex;align-items:center;gap:8px}
+.ostoggle>span{
+  font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--ink-faint);font-weight:600;
+}
+.seg{display:flex;border:1px solid var(--rule-firm);border-radius:999px;overflow:hidden;background:var(--card)}
+.seg button{
+  font:inherit;font-size:13px;font-weight:600;
+  padding:5px 15px;border:0;background:transparent;color:var(--ink-soft);
+  cursor:pointer;line-height:1.5;
+}
+.seg button[aria-pressed="true"]{background:var(--go);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#0C1410}}
+:root[data-theme="dark"] .seg button[aria-pressed="true"]{color:#0C1410}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1080px;margin:0 auto;padding-inline:var(--gut);padding-block:0 72px}
+.col{max-width:var(--measure)}
+
+/* ---------- masthead ---------- */
+.mast{padding-block:44px 30px;border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--f-display);font-size:11.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.14em;color:var(--go);
+}
+.mast h1{font-size:clamp(30px,6.4vw,50px);font-weight:700;margin-top:10px;letter-spacing:-0.028em}
+.mast .sub{margin-top:14px;font-size:18px;color:var(--ink-soft);max-width:54ch}
+
+.facts{
+  display:flex;flex-wrap:wrap;gap:0;margin-top:26px;
+  border:1px solid var(--rule);background:var(--card);border-radius:3px;
+}
+.fact{padding:12px 18px;flex:1 1 150px;border-right:1px solid var(--rule)}
+.fact:last-child{border-right:0}
+.fact dt{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-weight:600}
+.fact dd{margin:3px 0 0;font-size:15px;font-weight:500}
+@media (max-width:620px){
+  .fact{flex:1 1 100%;border-right:0;border-bottom:1px solid var(--rule)}
+  .fact:last-child{border-bottom:0}
+}
+
+/* ---------- help desk ---------- */
+.desk{
+  margin-top:26px;border:2px solid var(--go);border-radius:4px;
+  background:var(--go-wash);padding:18px 20px;
+}
+.desk .lab{
+  font-family:var(--f-display);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--go);
+  display:block;margin-bottom:7px;
+}
+.desk h4{font-size:17px;font-weight:700;margin-bottom:9px}
+.desk p{font-size:15.5px}
+.desk p+p{margin-top:9px}
+
+/* ---------- contents ---------- */
+.toc{margin-top:26px}
+.toc ol{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.toc a{
+  display:flex;gap:12px;align-items:baseline;
+  background:var(--card);padding:11px 16px;text-decoration:none;color:var(--ink);
+}
+.toc a:hover{background:var(--sunk)}
+.toc .n{font-family:var(--f-mono);font-size:12px;color:var(--go);font-weight:500;min-width:1.4em}
+.toc .t{font-weight:500;flex:1}
+.toc .m{font-size:12.5px;color:var(--ink-faint);font-family:var(--f-mono);white-space:nowrap}
+
+/* ---------- parts ---------- */
+.part{padding-block:46px;border-bottom:1px solid var(--rule)}
+.part-head{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.part-num{
+  font-family:var(--f-mono);font-size:12px;font-weight:500;
+  color:var(--go);background:var(--go-wash);
+  padding:3px 9px;border-radius:3px;letter-spacing:.04em;
+}
+.part-min{font-family:var(--f-mono);font-size:12px;color:var(--ink-faint)}
+.part h2{font-size:clamp(23px,4.4vw,31px);font-weight:700;margin-top:12px;letter-spacing:-0.02em}
+.lede{margin-top:12px;font-size:17px;color:var(--ink-soft)}
+
+h3.sub-h{font-size:17px;font-weight:600;margin-top:34px;letter-spacing:-0.008em}
+
+/* ---------- steps ---------- */
+ol.steps{counter-reset:s;list-style:none;margin:22px 0 0;padding:0}
+ol.steps>li{
+  counter-increment:s;position:relative;
+  padding:0 0 18px 40px;
+}
+ol.steps>li::before{
+  content:counter(s);
+  position:absolute;left:0;top:1px;
+  width:25px;height:25px;border-radius:50%;
+  background:var(--card);border:1px solid var(--rule-firm);
+  color:var(--ink-soft);
+  font-family:var(--f-mono);font-size:12px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;
+}
+ol.steps>li::after{
+  content:"";position:absolute;left:12px;top:30px;bottom:2px;width:1px;background:var(--rule);
+}
+ol.steps>li:last-child{padding-bottom:0}
+ol.steps>li:last-child::after{display:none}
+ol.steps p+p{margin-top:8px}
+.note{font-size:14.5px;color:var(--ink-soft);margin-top:7px}
+
+kbd{
+  font-family:var(--f-mono);font-size:12px;
+  border:1px solid var(--rule-firm);border-bottom-width:2px;
+  border-radius:4px;padding:1px 5px;background:var(--card);
+  white-space:nowrap;
+}
+.ui{
+  font-weight:600;
+  background:var(--sunk);
+  padding:1px 5px;border-radius:3px;
+  font-size:0.94em;
+  white-space:nowrap;
+}
+
+/* ---------- command block ---------- */
+.cmd{
+  margin-top:12px;display:flex;align-items:stretch;
+  border:1px solid var(--rule-firm);border-radius:4px;background:var(--card);overflow:hidden;
+}
+.cmd pre{
+  margin:0;padding:10px 13px;overflow-x:auto;flex:1;
+  font-family:var(--f-mono);font-size:13.5px;line-height:1.7;
+}
+.cmd button{
+  border:0;border-left:1px solid var(--rule);background:var(--sunk);
+  color:var(--ink-soft);font:inherit;font-size:11.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.07em;
+  padding:0 13px;cursor:pointer;white-space:nowrap;
+}
+.cmd button:hover{color:var(--ink)}
+.cmd button[data-done="1"]{color:var(--go)}
+
+/* ---------- os blocks ---------- */
+.os{display:none;margin-top:18px}
+[data-os="win"] .os-win,[data-os="mac"] .os-mac{display:block}
+.os-tag{
+  display:inline-block;font-family:var(--f-display);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.11em;color:var(--ink-faint);
+  border-bottom:2px solid var(--rule-firm);padding-bottom:3px;margin-bottom:12px;
+}
+.inline-win,.inline-mac{display:none}
+[data-os="win"] .inline-win,[data-os="mac"] .inline-mac{display:inline}
+
+/* ---------- callouts ---------- */
+.check,.warn,.hold{
+  margin-top:24px;padding:13px 16px;border-radius:0 4px 4px 0;
+}
+.check{border-left:3px solid var(--go);background:var(--go-wash)}
+.warn{border-left:3px solid var(--flag);background:var(--flag-wash)}
+.hold{border-left:3px solid var(--hold);background:var(--hold-wash)}
+.check .lab,.warn .lab,.hold .lab{
+  font-family:var(--f-display);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;
+  display:block;margin-bottom:4px;
+}
+.check .lab{color:var(--go)}
+.warn .lab{color:var(--flag)}
+.hold .lab{color:var(--hold)}
+.check p,.hold p{font-size:15.5px}
+.warn{font-size:15.5px}
+.hold p+p{margin-top:9px}
+
+/* ---------- details ---------- */
+details{
+  margin-top:14px;border:1px solid var(--rule);border-radius:4px;background:var(--card);
+}
+summary{
+  cursor:pointer;padding:11px 16px;font-weight:600;font-size:15px;list-style:none;
+  display:flex;align-items:center;gap:9px;
+}
+summary::-webkit-details-marker{display:none}
+summary::before{
+  content:"";width:0;height:0;
+  border-left:5px solid var(--ink-faint);
+  border-top:4px solid transparent;border-bottom:4px solid transparent;
+  transition:transform .15s ease;flex:none;
+}
+details[open] summary::before{transform:rotate(90deg)}
+.det-body{padding:0 16px 14px 30px;font-size:15px;color:var(--ink-soft)}
+.det-body p+p{margin-top:9px}
+
+/* ---------- aside ---------- */
+.aside{
+  margin-top:28px;border:1px solid var(--rule);border-radius:4px;
+  background:var(--card);padding:18px 20px;
+}
+.aside h4{font-size:15px;font-weight:700;margin-bottom:10px}
+.aside dl{margin:0;display:grid;gap:9px}
+.aside dt{font-weight:600;font-size:14.5px}
+.aside dd{margin:1px 0 0;font-size:14.5px;color:var(--ink-soft)}
+.aside p{font-size:14.5px;color:var(--ink-soft)}
+
+/* ---------- video ---------- */
+.vid{
+  margin-top:20px;display:flex;gap:13px;align-items:center;
+  border:1px solid var(--rule);border-radius:4px;background:var(--card);
+  padding:12px 15px;text-decoration:none;color:inherit;
+}
+.vid:hover{border-color:var(--rule-firm);background:var(--sunk)}
+.vid .glyph{
+  flex:none;width:34px;height:34px;border-radius:50%;
+  background:var(--go);display:flex;align-items:center;justify-content:center;
+}
+.vid .glyph svg{display:block}
+.vid .txt strong{display:block;font-size:14.5px;font-weight:600}
+.vid .txt span{font-size:13px;color:var(--ink-faint)}
+
+/* ---------- loop card ---------- */
+.loop{
+  margin-top:22px;border:1px solid var(--rule-firm);border-radius:4px;overflow:hidden;
+  background:var(--card);
+}
+.loop-h{
+  background:var(--sunk);padding:9px 16px;
+  font-family:var(--f-display);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-soft);
+  border-bottom:1px solid var(--rule);
+}
+.loop ol{margin:0;padding:14px 16px 14px 34px;display:grid;gap:7px;font-size:15.5px}
+.loop ol li::marker{color:var(--go);font-family:var(--f-mono);font-size:13px}
+
+/* ---------- fix table ---------- */
+.fixes{margin-top:22px;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.fix{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);border-top:1px solid var(--rule);background:var(--card)}
+.fix:first-child{border-top:0}
+.fix>div{padding:12px 16px}
+.fix>div:first-child{border-right:1px solid var(--rule);background:var(--sunk);font-family:var(--f-mono);font-size:13px;line-height:1.55}
+.fix>div:last-child{font-size:15px;color:var(--ink-soft)}
+@media (max-width:620px){
+  .fix{grid-template-columns:1fr}
+  .fix>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}
+}
+
+/* ---------- icon sprite + inline glyphs ---------- */
+.sprite{display:none}
+.ig{
+  width:1.08em;height:1.08em;vertical-align:-0.2em;margin-right:.12em;
+  stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ---------- activity bar map ---------- */
+.abmap{margin-top:24px;border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:var(--card)}
+.abmap-h{
+  background:var(--sunk);padding:9px 16px;border-bottom:1px solid var(--rule);
+  font-family:var(--f-display);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-soft);
+}
+.abrow{display:grid;grid-template-columns:54px 1fr;align-items:stretch;border-top:1px solid var(--rule)}
+.abrow:first-of-type{border-top:0}
+.abcell{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--sunk);border-right:1px solid var(--rule);padding:11px 0;
+}
+.abcell svg{width:23px;height:23px;stroke:var(--ink-soft);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.abrow.key .abcell{background:var(--go-wash)}
+.abrow.key .abcell svg{stroke:var(--go)}
+.abtxt{padding:10px 16px;font-size:15px;align-self:center}
+.abtxt strong{font-weight:600}
+.abtxt span{display:block;font-size:13.5px;color:var(--ink-faint);margin-top:1px}
+.abfoot{padding:10px 16px;border-top:1px solid var(--rule);font-size:13.5px;color:var(--ink-faint);background:var(--sunk)}
+
+/* ---------- vs code mock ---------- */
+.vscompare{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:700px){.vscompare{grid-template-columns:1fr}}
+.vsmock{border:1px solid var(--rule-firm);border-radius:5px;overflow:hidden;background:var(--card);display:flex;flex-direction:column}
+.vs-chrome{display:flex;gap:5px;align-items:center;padding:7px 10px;background:var(--sunk);border-bottom:1px solid var(--rule)}
+.vs-dot{width:8px;height:8px;border-radius:50%;background:var(--rule-firm)}
+.vs-body{display:grid;grid-template-columns:32px 1fr;flex:1;min-height:132px}
+.vs-rail{background:var(--sunk);border-right:1px solid var(--rule);display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 0}
+.vs-rail svg{width:15px;height:15px;stroke:var(--ink-faint);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.vs-rail svg.on{stroke:var(--go);stroke-width:1.9}
+.vs-side{padding:10px 11px}
+.vs-head{
+  font-family:var(--f-display);font-size:9.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px;
+}
+.vs-fold{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--ink);letter-spacing:.02em}
+.vs-file{font-family:var(--f-mono);font-size:12px;color:var(--ink-soft);padding-left:15px;margin-top:5px;position:relative}
+.vs-file::before{content:"";position:absolute;left:5px;top:-2px;bottom:8px;width:1px;background:var(--rule-firm)}
+.vs-empty{font-size:12.5px;line-height:1.5;color:var(--ink-faint)}
+.vs-btn{margin-top:9px;display:inline-block;background:var(--mark);color:#fff;font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:3px}
+.mock-cap{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-top:1px solid var(--rule);font-size:13.5px;line-height:1.48}
+.mock-cap b{font-family:var(--f-display);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;flex:none;padding-top:2px}
+.cap-good{background:var(--go-wash)}
+.cap-good b{color:var(--go)}
+.cap-bad{background:var(--flag-wash)}
+.cap-bad b{color:var(--flag)}
+
+footer{padding-block:34px;font-size:14px;color:var(--ink-faint);max-width:var(--measure)}
+footer p+p{margin-top:9px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- print / PDF ---------- */
+@page{margin:14mm 13mm}
+@media print{
+  :root{
+    --paper:#FFFFFF;--card:#FFFFFF;--sunk:#F1F3F0;--ink:#101410;--ink-soft:#3D453F;
+    --ink-faint:#5E665F;--rule:#C9CFC7;--rule-firm:#A9B1A8;--go:#14573A;--go-wash:#EDF4EF;
+    --flag:#8C3714;--flag-wash:#FAEFE9;--mark:#1F3A7A;--hold:#5E4409;--hold-wash:#F8F3E4;
+  }
+  body{background:#fff;font-size:10.4pt;line-height:1.5}
+  .bar{display:none}
+  .wrap{max-width:none;padding-inline:0;padding-block:0}
+  .col{max-width:none}
+
+  /* both operating systems print, since there's no toggle on paper */
+  .os{display:block!important}
+  .inline-win,.inline-mac{display:inline!important}
+  .inline-win::after{content:" / "}
+
+  .mast{padding-block:0 14pt}
+  .mast h1{font-size:26pt}
+  .part{padding-block:16pt 14pt}
+  .part-head,.part h2{break-after:avoid}
+  .part h2{font-size:17pt}
+  h3.sub-h{margin-top:16pt;break-after:avoid}
+  .part-head,.lede{break-after:avoid}
+
+  .desk,.check,.warn,.hold,.aside,.loop,.vsmock,.vid,.facts,.cmd{break-inside:avoid}
+  ol.steps>li{break-inside:avoid}
+  /* long tables may split between pages, but never mid-row */
+  .abmap,.fixes,.toc{break-inside:auto}
+  .abrow,.fix,.toc li{break-inside:avoid}
+  .abmap-h,.loop-h{break-after:avoid}
+  /* paired shortcut keys read as "Ctrl / Cmd" rather than two odd boxes */
+  kbd.inline-win,kbd.inline-mac{border:0;background:none;padding:0;font-weight:600}
+  .vscompare{grid-template-columns:1fr 1fr}
+
+  details{break-inside:avoid}
+  summary{font-size:11pt}
+
+  a{color:#1F3A7A;text-decoration:underline}
+  a.u[href^="http"]::after{content:" — " attr(href);font-size:8pt;color:#5E665F;word-break:break-all;font-weight:400}
+  .vid::after{display:block;content:attr(href);font-size:8pt;color:#5E665F;word-break:break-all;margin-top:3pt}
+  .vid{display:block}
+  .vid .glyph{display:none}
+
+  .abfoot,footer{color:#3D453F}
+}
+</style>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="bar-name">Zero to Shared Code <span>&nbsp;·&nbsp; setup walkthrough</span></div>
+    <div class="ostoggle">
+      <span>My laptop</span>
+      <div class="seg" role="group" aria-label="Choose your operating system">
+        <button type="button" id="btn-win" aria-pressed="true">Windows</button>
+        <button type="button" id="btn-mac" aria-pressed="false">Mac</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="ic-explorer" viewBox="0 0 24 24"><path d="M10 3h5l4 4v11a1.5 1.5 0 0 1-1.5 1.5H10A1.5 1.5 0 0 1 8.5 18V4.5A1.5 1.5 0 0 1 10 3z"/><path d="M15 3v4h4"/><path d="M5.5 7.5V20A1.5 1.5 0 0 0 7 21.5h8"/></symbol>
+  <symbol id="ic-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m19.6 19.6-4.3-4.3"/></symbol>
+  <symbol id="ic-scm" viewBox="0 0 24 24"><circle cx="7" cy="5.6" r="2.1"/><circle cx="7" cy="18.4" r="2.1"/><circle cx="17" cy="8.6" r="2.1"/><path d="M7 7.7v8.6"/><path d="M17 10.7v1.1a4 4 0 0 1-4 4H9.2"/></symbol>
+  <symbol id="ic-run" viewBox="0 0 24 24"><path d="M4.5 4.5 13 10.6l-8.5 6.1z"/><circle cx="17.6" cy="16.4" r="3"/><path d="M17.6 13.4v-1.1M14.6 16.4h-1.2M20.6 16.4h1.2"/></symbol>
+  <symbol id="ic-ext" viewBox="0 0 24 24"><rect x="3.5" y="12.8" width="7.7" height="7.7" rx="1.2"/><rect x="12.8" y="12.8" width="7.7" height="7.7" rx="1.2"/><rect x="3.5" y="3.5" width="7.7" height="7.7" rx="1.2"/><rect x="14.4" y="2" width="7.7" height="7.7" rx="1.2"/></symbol>
+  <symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 3.2c0 4.4 3.4 7.8 7.8 7.8-4.4 0-7.8 3.4-7.8 7.8 0-4.4-3.4-7.8-7.8-7.8 4.4 0 7.8-3.4 7.8-7.8z"/></symbol>
+  <symbol id="ic-user" viewBox="0 0 24 24"><circle cx="12" cy="8.4" r="3.7"/><path d="M4.9 20.2a7.3 7.3 0 0 1 14.2 0"/></symbol>
+  <symbol id="ic-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-width="3.2" stroke-dasharray="2.5 3.78" stroke-linecap="butt"/><circle cx="12" cy="12" r="6.3"/><circle cx="12" cy="12" r="2.9"/></symbol>
+</defs></svg>
+
+<div class="wrap" id="root" data-os="win">
+
+  <header class="mast col">
+    <div class="eyebrow">Setup walkthrough · no prior experience assumed</div>
+    <h1>Zero to shared code</h1>
+    <p class="sub">Six parts that take you from an empty laptop to a link you can paste in an email, with a checkpoint after every one so you always know whether it worked.</p>
+
+    <dl class="facts">
+      <div class="fact"><dt>Time</dt><dd>75–90 minutes</dd></div>
+      <div class="fact"><dt>Cost</dt><dd>Free, apart from the ChatGPT plan you already have</dd></div>
+      <div class="fact"><dt>You'll need</dt><dd>An email address and permission to install software</dd></div>
+    </dl>
+
+    <div class="desk">
+      <span class="lab">Do this before Part 1</span>
+      <h4>Open ChatGPT in a browser tab and leave it there</h4>
+      <p>It is your help desk for the next ninety minutes. Any time something on this page doesn't match what you're seeing, paste the exact error text — or describe the screen you're looking at — and ask. It needs no setup at all, and unlike the assistant you'll install in Part 2, it can help with things happening in your browser, like a signup page that won't accept your username.</p>
+      <p>Tell it what you're doing: <em>"I'm a complete beginner following a setup guide for VS Code and GitHub. Here's what I'm stuck on."</em> Context makes its answers dramatically less confusing.</p>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <ol>
+        <li><a href="#p1"><span class="n">01</span><span class="t">Install VS Code</span><span class="m">10 min</span></a></li>
+        <li><a href="#p2"><span class="n">02</span><span class="t">Your first project, and Codex</span><span class="m">20 min</span></a></li>
+        <li><a href="#p3"><span class="n">03</span><span class="t">Make a GitHub account</span><span class="m">10 min</span></a></li>
+        <li><a href="#p4"><span class="n">04</span><span class="t">Install Git — the step people skip</span><span class="m">10 min</span></a></li>
+        <li><a href="#p5"><span class="n">05</span><span class="t">Connect VS Code to GitHub</span><span class="m">20 min</span></a></li>
+        <li><a href="#p6"><span class="n">06</span><span class="t">Share your code</span><span class="m">10 min</span></a></li>
+      </ol>
+    </nav>
+
+    <div class="aside">
+      <h4>Three names, three different things</h4>
+      <dl>
+        <dt>VS Code</dt><dd>The program you actually type code into. It's what you install first, and everything else plugs into it.</dd>
+        <dt>Git</dt><dd>A program that runs on your laptop. It takes snapshots of your files so you can go back to any earlier version. It has no website and no login.</dd>
+        <dt>GitHub</dt><dd>A website that stores a copy of those snapshots online, so other people can see your work and you have a backup. Owned by Microsoft, free for what you're doing.</dd>
+      </dl>
+      <p style="margin-top:12px">Git and GitHub are separate things with confusingly similar names. You need both, and you install them at different points below.</p>
+    </div>
+  </header>
+
+  <!-- ============ PART 1 ============ -->
+  <section class="part col" id="p1">
+    <div class="part-head"><span class="part-num">Part 01</span><span class="part-min">≈ 10 minutes</span></div>
+    <h2>Install VS Code</h2>
+    <p class="lede">Visual Studio Code is the window you write in. It's free, and it is not the same thing as "Visual Studio" — if the download is several gigabytes, you're on the wrong page.</p>
+
+    <div class="os os-win">
+      <div class="os-tag">On Windows</div>
+      <ol class="steps">
+        <li><p>Go to <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a> and click the Windows button. You'll get a file ending in <code>.exe</code>.</p></li>
+        <li><p>Run it. Accept the agreement and click through the first few screens.</p></li>
+        <li>
+          <p>On the screen headed <span class="ui">Select Additional Tasks</span>, tick these boxes:</p>
+          <p class="note"><strong>Add "Open with Code" action to Windows Explorer file context menu</strong> · <strong>Add "Open with Code" action to Windows Explorer directory context menu</strong> · <strong>Add to PATH</strong></p>
+          <p class="note">The PATH box is the one that matters. It's ticked by default — leave it ticked.</p>
+        </li>
+        <li><p>Finish the installer and let it open VS Code.</p></li>
+      </ol>
+    </div>
+
+    <div class="os os-mac">
+      <div class="os-tag">On Mac</div>
+      <ol class="steps">
+        <li><p>Go to <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a> and click the Mac button. Pick <strong>Apple Silicon</strong> if your Mac is from 2021 or later, <strong>Intel</strong> if it's older. <strong>Universal</strong> works on either if you're unsure.</p></li>
+        <li><p>Your browser downloads a <code>.zip</code> and usually unzips it for you, leaving <strong>Visual Studio Code</strong> in your Downloads folder.</p></li>
+        <li><p>Drag <strong>Visual Studio Code</strong> into your <strong>Applications</strong> folder. This step is easy to forget and everything works better once you do it.</p></li>
+        <li>
+          <p>Open it from Applications.</p>
+          <p class="note">If macOS says it can't verify the developer, close the message, right-click the app icon, choose <span class="ui">Open</span>, and confirm. You only do this once.</p>
+        </li>
+        <li><p>Right-click the VS Code icon in your Dock and choose <span class="ui">Options → Keep in Dock</span>.</p></li>
+      </ol>
+    </div>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>VS Code opens and shows a Welcome tab. There's a vertical strip of icons down the left edge — that strip is called the Activity Bar, and you'll be clicking things on it for the rest of this guide.</p>
+    </div>
+
+    <h3 class="sub-h">Learn the left strip now — you'll use it constantly</h3>
+    <p class="note">Every instruction below says things like "click Extensions" or "click Source Control". Those are all icons on this one strip. Here is what each is, top to bottom. The four in green are the ones this guide uses.</p>
+
+    <div class="abmap">
+      <div class="abmap-h">The Activity Bar, top to bottom</div>
+
+      <div class="abrow">
+        <div class="abcell"><svg><use href="#ic-explorer"/></svg></div>
+        <div class="abtxt"><strong>Explorer</strong><span>The files in your project. Two overlapping pages.</span></div>
+      </div>
+      <div class="abrow">
+        <div class="abcell"><svg><use href="#ic-search"/></svg></div>
+        <div class="abtxt"><strong>Search</strong><span>Find text across every file at once.</span></div>
+      </div>
+      <div class="abrow key">
+        <div class="abcell"><svg><use href="#ic-scm"/></svg></div>
+        <div class="abtxt"><strong>Source Control</strong><span>Snapshots and publishing. Used in Part 5. Looks like a branching line.</span></div>
+      </div>
+      <div class="abrow">
+        <div class="abcell"><svg><use href="#ic-run"/></svg></div>
+        <div class="abtxt"><strong>Run and Debug</strong><span>Runs your code. A play triangle with a small bug.</span></div>
+      </div>
+      <div class="abrow key">
+        <div class="abcell"><svg><use href="#ic-ext"/></svg></div>
+        <div class="abtxt"><strong>Extensions</strong><span>Where you install Codex in Part 2. Four squares, one pulled away.</span></div>
+      </div>
+      <div class="abrow key">
+        <div class="abcell"><svg><use href="#ic-spark"/></svg></div>
+        <div class="abtxt"><strong>Codex</strong><span>Not there yet. It appears in this strip once you install it in Part 2.</span></div>
+      </div>
+      <div class="abrow key">
+        <div class="abcell"><svg><use href="#ic-user"/></svg></div>
+        <div class="abtxt"><strong>Accounts</strong><span>Sign in to GitHub here in Part 5. Down at the <em>bottom</em> of the strip, below a gap — this is the one people can't find.</span></div>
+      </div>
+      <div class="abrow">
+        <div class="abcell"><svg><use href="#ic-gear"/></svg></div>
+        <div class="abtxt"><strong>Settings</strong><span>Very bottom corner.</span></div>
+      </div>
+
+      <p class="abfoot">Drawn to match, not photographed — your version may space them slightly differently, and hovering any icon shows its name.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART 2 ============ -->
+  <section class="part col" id="p2">
+    <div class="part-head"><span class="part-num">Part 02</span><span class="part-min">≈ 20 minutes</span></div>
+    <h2>Your first project, and Codex</h2>
+    <p class="lede">Codex is OpenAI's coding assistant, and it runs on the ChatGPT account you already pay for — no API key, no separate card, no developer account. It won't start without a project folder to look at, so you make one first.</p>
+
+    <h3 class="sub-h">Make a folder and open it</h3>
+    <ol class="steps">
+      <li><p>Make an ordinary folder somewhere sensible — Documents, say — and call it <code>hello-cs</code>.</p></li>
+      <li>
+        <p>In VS Code: <span class="ui">File → Open Folder</span><span class="inline-mac"> (on some versions it's <span class="ui">File → Open…</span>)</span> and choose that folder.</p>
+        <p class="note">If VS Code asks whether you trust the authors of the files in this folder, say yes. It's your folder.</p>
+      </li>
+      <li>
+        <p>Make a file. <span class="ui">File → New File</span>, type a line or two, then save it as <code>hello.py</code> (or <code>index.html</code> — anything).</p>
+        <p class="note">Save it properly with <kbd class="inline-win">Ctrl</kbd><kbd class="inline-mac">⌘</kbd> <kbd>S</kbd>. A dot beside the tab name means unsaved.</p>
+      </li>
+    </ol>
+
+    <h3 class="sub-h">Check you opened a folder, not a file</h3>
+    <p class="note">A <strong>file</strong> is one document — <code>hello.py</code>. A <strong>folder</strong> is the box that holds documents — <code>hello-cs</code>. VS Code can open either, and it looks almost the same, but only one of them works. Codex won't start without a folder, and neither will the version control in Part 5.</p>
+    <p class="note">Look at your Explorer panel and compare it to these two:</p>
+
+    <div class="vscompare">
+
+      <div class="vsmock">
+        <div class="vs-chrome"><span class="vs-dot"></span><span class="vs-dot"></span><span class="vs-dot"></span></div>
+        <div class="vs-body">
+          <div class="vs-rail">
+            <svg class="on"><use href="#ic-explorer"/></svg>
+            <svg><use href="#ic-search"/></svg>
+            <svg><use href="#ic-scm"/></svg>
+            <svg><use href="#ic-ext"/></svg>
+          </div>
+          <div class="vs-side">
+            <div class="vs-head">Explorer</div>
+            <div class="vs-fold">⌄ HELLO-CS</div>
+            <div class="vs-file">hello.py</div>
+          </div>
+        </div>
+        <div class="mock-cap cap-good">
+          <b>Right</b>
+          <span>The folder's name sits at the top in capitals, with your files listed underneath it.</span>
+        </div>
+      </div>
+
+      <div class="vsmock">
+        <div class="vs-chrome"><span class="vs-dot"></span><span class="vs-dot"></span><span class="vs-dot"></span></div>
+        <div class="vs-body">
+          <div class="vs-rail">
+            <svg class="on"><use href="#ic-explorer"/></svg>
+            <svg><use href="#ic-search"/></svg>
+            <svg><use href="#ic-scm"/></svg>
+            <svg><use href="#ic-ext"/></svg>
+          </div>
+          <div class="vs-side">
+            <div class="vs-head">Explorer</div>
+            <div class="vs-empty">You have not yet opened a folder.</div>
+            <span class="vs-btn">Open Folder</span>
+          </div>
+        </div>
+        <div class="mock-cap cap-bad">
+          <b>Wrong</b>
+          <span>No folder name, and a blue <strong>Open Folder</strong> button instead. Your file may still be open in a tab — that isn't enough.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="warn">
+      <span class="lab">If you're looking at the right-hand one</span>
+      Go back to <span class="ui">File → Open Folder</span> and pick <code>hello-cs</code> itself — click the folder once to select it, then click Open. Don't go <em>into</em> the folder and pick the file inside it. That one distinction causes more stuck beginners than anything else in this guide.
+    </div>
+
+    <h3 class="sub-h">Install Codex</h3>
+    <ol class="steps">
+      <li>
+        <p>Click <span class="ui"><svg class="ig"><use href="#ic-ext"/></svg>Extensions</span> in the left icon strip — the four squares with one pulled away from the others.</p>
+      </li>
+      <li>
+        <p>Search for <strong>Codex</strong> and install the one published by <strong>OpenAI</strong>.</p>
+        <p class="note">Several look-alikes share the name. The right one is identified as <code>openai.chatgpt</code> on its detail page. If you'd rather not guess, install it from <a class="u" href="https://marketplace.visualstudio.com/items?itemName=openai.chatgpt" target="_blank" rel="noopener">the marketplace listing</a>.</p>
+      </li>
+      <li>
+        <p>Look at the left strip again. A <strong>new icon</strong> has appeared on it that wasn't there before — that's Codex. Click it.</p>
+        <p class="note">If you can't find it, press <kbd class="inline-win">Ctrl</kbd><kbd class="inline-mac">⌘</kbd> <kbd>Shift</kbd> <kbd>P</kbd> and type <em>Codex: Open Codex Sidebar</em>.</p>
+      </li>
+      <li><p>Choose <span class="ui">Sign in with ChatGPT</span>. Your browser opens, you approve, and VS Code comes back to the front.</p></li>
+      <li>
+        <p>If a box appears asking you to add a project, pick your <code>hello-cs</code> folder and click <span class="ui">Add project</span>.</p>
+      </li>
+    </ol>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>The Codex panel shows a message box instead of a sign-in button, and the status bar at the bottom shows your project name. Type <em>what files are in this project?</em> and it answers with your actual file names.</p>
+    </div>
+
+    <div class="hold">
+      <span class="lab">For now: ask, don't let it edit</span>
+      <p>Until Part 5, use Codex to <strong>explain</strong> things, not to change your files. Ask it <em>what does this line do?</em>, <em>why is this an IndentationError?</em>, <em>what's a sensible name for this variable?</em> — and read the answers.</p>
+      <p>The reason is simple: right now there is no undo. If it rewrites a file and you don't like the result, nothing on your laptop remembers what the file looked like before. Part 5 fixes that, and then you can let it loose.</p>
+    </div>
+
+    <details>
+      <summary>If Codex says "Add a project to use Codex"</summary>
+      <div class="det-body">
+        <p>It has no folder. Go back to <span class="ui">File → Open Folder</span> and pick <code>hello-cs</code>. Don't point it at your whole home directory or the root of your hard drive — it wants one project.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>If sign-in fails with "403" or "contact your administrator"</summary>
+      <div class="det-body">
+        <p>Your ChatGPT account belongs to an organization workspace, and Codex is controlled by a setting an administrator holds. They toggle it under workspace settings; you can't turn it on yourself.</p>
+        <p>This is worth checking <em>before</em> a workshop rather than during one. If it's blocked, everything else on this page still works — skip to Part 3 and use the ChatGPT tab as your assistant instead.</p>
+      </div>
+    </details>
+
+    <div class="warn">
+      <span class="lab">Worth saying out loud to a class</span>
+      Codex is fluent and sometimes wrong in the same breath. It produces code that runs but doesn't do what you asked, cites functions that don't exist, and never signals uncertainty. Treat every suggestion as a draft from a confident stranger.
+    </div>
+  </section>
+
+  <!-- ============ PART 3 ============ -->
+  <section class="part col" id="p3">
+    <div class="part-head"><span class="part-num">Part 03</span><span class="part-min">≈ 10 minutes</span></div>
+    <h2>Make a GitHub account</h2>
+    <p class="lede">This is the account whose name ends up in every link you share, so it's worth spending two minutes on the username. Codex can't see your browser, so if you get stuck here, the ChatGPT tab is the one to ask.</p>
+
+    <ol class="steps">
+      <li><p>Go to <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>.</p></li>
+      <li>
+        <p>Enter an email address you'll still have in three years.</p>
+        <p class="note">A university address works and later qualifies you for <a class="u" href="https://education.github.com" target="_blank" rel="noopener">GitHub Education</a> benefits. You can add a second email to the account afterwards.</p>
+      </li>
+      <li><p>Create a password. GitHub requires at least 15 characters, or at least 8 if it includes a number and a lowercase letter.</p></li>
+      <li>
+        <p>Pick a username. This becomes part of every address you hand out — <code>github.com/<em>yourname</em>/project-name</code>.</p>
+        <p class="note">Lowercase, no graduation year, nothing you'd be embarrassed to put on a résumé. Changing it later breaks every link you've already shared.</p>
+      </li>
+      <li><p>Solve the puzzle, then type in the code GitHub emails you.</p></li>
+      <li><p>When asked to choose a plan, choose <span class="ui">Free</span>. It includes unlimited public and private repositories.</p></li>
+      <li>
+        <p>Set up two-factor authentication when prompted. GitHub requires it for anyone who uploads code, so you can't skip it for long.</p>
+        <p class="note">An authenticator app (Microsoft Authenticator, Google Authenticator, Authy) is faster than text messages. <strong>Save the recovery codes</strong> it shows you — put them somewhere that isn't your phone.</p>
+      </li>
+    </ol>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>Type <code>github.com/your-username</code> into your browser and you see your own profile page, empty except for your name.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART 4 ============ -->
+  <section class="part col" id="p4">
+    <div class="part-head"><span class="part-num">Part 04</span><span class="part-min">≈ 10 minutes</span></div>
+    <h2>Install Git — the step people skip</h2>
+    <p class="lede">VS Code's version-control buttons don't do the work themselves; they hand it to Git. If Git isn't installed, the buttons either don't appear or don't respond, and there's no error message explaining why. Nearly every "it's broken" moment in a first workshop traces back to here.</p>
+
+    <div class="os os-win">
+      <div class="os-tag">On Windows</div>
+      <ol class="steps">
+        <li><p>Go to <a href="https://git-scm.com/download/win" target="_blank" rel="noopener">git-scm.com/download/win</a>. The download starts on its own; if it doesn't, click <strong>64-bit Git for Windows Setup</strong>.</p></li>
+        <li>
+          <p>Run the installer. It asks a lot of questions — <strong>the defaults are all correct</strong>. Click Next through them.</p>
+          <p class="note">The one screen worth a glance asks which editor Git should use. Choose <strong>Use Visual Studio Code as Git's default editor</strong> if you like; nothing breaks either way.</p>
+        </li>
+        <li><p>Click Install, then Finish. Untick "View Release Notes".</p></li>
+        <li><p><strong>Close VS Code completely and reopen it</strong>, then reopen your <code>hello-cs</code> folder. VS Code only looks for Git when it starts up.</p></li>
+      </ol>
+    </div>
+
+    <div class="os os-mac">
+      <div class="os-tag">On Mac</div>
+      <ol class="steps">
+        <li><p>In VS Code, open the menu <span class="ui">Terminal → New Terminal</span>. A panel opens at the bottom of the window.</p></li>
+        <li>
+          <p>Type this and press Enter:</p>
+          <div class="cmd"><pre>git --version</pre><button type="button" class="copy">Copy</button></div>
+        </li>
+        <li>
+          <p>If a version number appears, Git is already installed — skip ahead to naming yourself.</p>
+          <p>If a box pops up offering to install the <strong>command line developer tools</strong>, click <span class="ui">Install</span> and wait. It's a few hundred megabytes.</p>
+          <p class="note">If neither happens, download the installer from <a href="https://git-scm.com/download/mac" target="_blank" rel="noopener">git-scm.com/download/mac</a>.</p>
+        </li>
+        <li><p><strong>Quit VS Code completely</strong> (<kbd>⌘</kbd> <kbd>Q</kbd> — closing the window isn't enough on a Mac) and reopen it, then reopen your <code>hello-cs</code> folder.</p></li>
+      </ol>
+    </div>
+
+    <h3 class="sub-h">Then tell Git who you are</h3>
+    <p class="note">You do this once, ever. Git stamps your name and email onto every snapshot, and GitHub uses the email to credit the work to your account.</p>
+    <p class="note">Open <span class="ui">Terminal → New Terminal</span> in VS Code and type these two lines, pressing Enter after each, with your own details swapped in:</p>
+
+    <div class="cmd"><pre>git config --global user.name "Your Name"</pre><button type="button" class="copy">Copy</button></div>
+    <div class="cmd"><pre>git config --global user.email "you@example.com"</pre><button type="button" class="copy">Copy</button></div>
+
+    <div class="warn">
+      <span class="lab">Use the same email</span>
+      Use the exact address on your GitHub account from Part 3. If it doesn't match, your commits show up on GitHub as an anonymous grey silhouette instead of you.
+    </div>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>In the VS Code terminal, <code>git --version</code> prints something like <code>git version 2.51.0</code>, and <code>git config --global user.name</code> prints your name back at you.</p>
+    </div>
+  </section>
+
+  <!-- ============ PART 5 ============ -->
+  <section class="part col" id="p5">
+    <div class="part-head"><span class="part-num">Part 05</span><span class="part-min">≈ 20 minutes</span></div>
+    <h2>Connect VS Code to GitHub</h2>
+    <p class="lede">You sign in once, take your first snapshot, and put the folder online. After this you never type a GitHub password again — and Codex gets to start editing.</p>
+
+    <a class="vid" href="https://www.youtube.com/watch?v=V7WpadAi3RI" target="_blank" rel="noopener">
+      <span class="glyph"><svg width="13" height="14" viewBox="0 0 13 14" aria-hidden="true"><path d="M12 7 0 14V0z" fill="#fff"/></svg></span>
+      <span class="txt"><strong>Watch: How to Connect GitHub to Visual Studio Code</strong><span>Saad Qureshi Official · the same steps, on screen</span></span>
+    </a>
+
+    <h3 class="sub-h">Sign in</h3>
+    <ol class="steps">
+      <li><p>In VS Code, look at the <em>bottom</em> of the left icon strip for the person-shaped <span class="ui"><svg class="ig"><use href="#ic-user"/></svg>Accounts</span> icon, below the gap. Click it.</p></li>
+      <li><p>Choose <span class="ui">Sign in with GitHub</span>.</p></li>
+      <li><p>Your browser opens. Sign in to GitHub if it asks, then click the green <span class="ui">Authorize Visual-Studio-Code</span> button.</p></li>
+      <li><p>The browser asks whether to open Visual Studio Code. Say yes. VS Code comes back to the front.</p></li>
+    </ol>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>Click the Accounts icon again. Your GitHub username is listed there.</p>
+    </div>
+
+    <h3 class="sub-h">Take your first snapshot and publish it</h3>
+    <ol class="steps">
+      <li><p>With <code>hello-cs</code> open, click <span class="ui"><svg class="ig"><use href="#ic-scm"/></svg>Source Control</span> in the left icon strip — the branching line. Keyboard: <kbd class="inline-win">Ctrl</kbd><kbd class="inline-mac">⌃</kbd> <kbd>Shift</kbd> <kbd>G</kbd>.</p></li>
+      <li>
+        <p>Click <span class="ui">Initialize Repository</span>.</p>
+        <p class="note">You've just told Git to start taking snapshots of this folder. Nothing has left your laptop yet.</p>
+      </li>
+      <li>
+        <p>Your file appears under <strong>Changes</strong>. Hover over its name and click the <strong>+</strong> that appears. It moves up to <strong>Staged Changes</strong>.</p>
+        <p class="note">Staging is you saying "these are the edits I mean to record" — it lets you save a snapshot of some changes and not others.</p>
+      </li>
+      <li>
+        <p>Type a short message in the box at the top — <em>first commit</em> — and click the blue <span class="ui">Commit</span> button.</p>
+        <p class="note">That's a snapshot. It lives on your laptop and you can return to it forever.</p>
+      </li>
+      <li><p>Click the blue button that replaces it, labelled <span class="ui">Publish Branch</span> — some versions say <span class="ui">Publish to GitHub</span>. Same thing.</p></li>
+      <li><p>VS Code asks whether to publish to a <strong>private</strong> or <strong>public</strong> repository. Private means only you and people you invite can see it; you can switch it to public any time.</p></li>
+    </ol>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>A small notification offers <span class="ui">Open on GitHub</span>. Click it. Your file is sitting on a web page with your username in the address. That address is the thing you share.</p>
+    </div>
+
+    <h3 class="sub-h">Now let Codex edit</h3>
+    <p class="note">You have an undo button, so the rule from Part 2 lifts. Try this once, deliberately, so you see the mechanism:</p>
+    <ol class="steps">
+      <li><p>Ask Codex to change something real — <em>add comments to this file explaining each line to a beginner</em>.</p></li>
+      <li>
+        <p>When it's done, open <span class="ui">Source Control</span> and click the file name.</p>
+        <p class="note">VS Code shows the before and after side by side, in green and red. Every line it touched is visible.</p>
+      </li>
+      <li><p>Don't like it? Hover the file in the Changes list and click the <strong>↺</strong> (Discard Changes). The file snaps back to your last commit as if nothing happened.</p></li>
+      <li><p>Like it? Stage, commit, and say so in the message — <em>added comments (Codex)</em>. Future you will want to know which parts you wrote.</p></li>
+    </ol>
+
+    <div class="hold">
+      <span class="lab">The habit worth teaching above all others</span>
+      <p><strong>Commit before you let it edit.</strong> Not because Codex is untrustworthy in particular, but because a snapshot turns every AI suggestion from a gamble into a proposal you can read and reject.</p>
+      <p>This is also the most convincing argument for version control you will ever have in front of a class. They've just spent twenty minutes wanting an undo button. Now they have one, and they know exactly what it's for.</p>
+    </div>
+
+    <div class="loop">
+      <div class="loop-h">From now on, every session is this loop</div>
+      <ol>
+        <li>Edit your files and <strong>save</strong> them.</li>
+        <li>Open <strong>Source Control</strong>, click <strong>+</strong> to stage what you changed.</li>
+        <li>Type a message describing what you did.</li>
+        <li>Click <strong>Commit</strong>.</li>
+        <li>Click <strong>Sync Changes</strong> — this sends yours up and pulls anyone else's down.</li>
+      </ol>
+    </div>
+
+    <div class="aside">
+      <h4>Five words your students will need</h4>
+      <dl>
+        <dt>Repository (repo)</dt><dd>A folder Git is watching. It exists twice: on your laptop and on GitHub.</dd>
+        <dt>Commit</dt><dd>One saved snapshot, with a message attached saying what changed and why.</dd>
+        <dt>Stage</dt><dd>Choosing which changes go into the next commit. This is the step nobody expects.</dd>
+        <dt>Push / pull</dt><dd>Push sends your commits up to GitHub. Pull brings other people's down. <strong>Sync</strong> does both.</dd>
+        <dt>Clone</dt><dd>Downloading a repository from GitHub to a laptop, history and all.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ PART 6 ============ -->
+  <section class="part col" id="p6">
+    <div class="part-head"><span class="part-num">Part 06</span><span class="part-min">≈ 10 minutes</span></div>
+    <h2>Share your code</h2>
+    <p class="lede">The link is simply the address bar. Everything below is about who can open it.</p>
+
+    <a class="vid" href="https://www.youtube.com/watch?v=RkInscKc91M" target="_blank" rel="noopener">
+      <span class="glyph"><svg width="13" height="14" viewBox="0 0 13 14" aria-hidden="true"><path d="M12 7 0 14V0z" fill="#fff"/></svg></span>
+      <span class="txt"><strong>Watch: How To Share a Link To a GitHub Repository</strong><span>The 60-second version of this part</span></span>
+    </a>
+
+    <h3 class="sub-h">The whole project</h3>
+    <ol class="steps">
+      <li><p>Open your repository on github.com and copy the address from your browser's address bar. It looks like <code>github.com/yourname/hello-cs</code>.</p></li>
+      <li><p>Paste it into an email, a syllabus, or your LMS. That's the entire mechanism.</p></li>
+    </ol>
+
+    <div class="warn">
+      <span class="lab">The one that catches everyone</span>
+      If you made the repository <strong>private</strong>, that link shows a 404 to everyone else — it doesn't say "no permission", it says the page doesn't exist. Either make it public, or invite people by name.
+    </div>
+
+    <h3 class="sub-h">Making it public, or inviting people</h3>
+    <ol class="steps">
+      <li><p><strong>To make it public:</strong> on the repository page, <span class="ui">Settings</span> → scroll to the bottom → <span class="ui">Change visibility</span> → Public.</p></li>
+      <li><p><strong>To invite specific people:</strong> <span class="ui">Settings → Collaborators</span> → <span class="ui">Add people</span> → type their GitHub username. They get an email invitation they have to accept.</p></li>
+    </ol>
+
+    <h3 class="sub-h">Sharing something narrower</h3>
+    <ol class="steps">
+      <li><p><strong>One file:</strong> click it on GitHub and copy the address.</p></li>
+      <li><p><strong>Specific lines:</strong> open the file, click the line number in the left margin, shift-click a second line number to select a range, then copy the address. It now points at exactly those lines — useful for "look at line 14".</p></li>
+      <li><p><strong>A starting point for students:</strong> <span class="ui">Settings</span> → tick <span class="ui">Template repository</span>. Everyone who opens your repo gets a <span class="ui">Use this template</span> button that hands them their own private copy.</p></li>
+      <li><p><strong>Someone else's code onto your laptop:</strong> in VS Code, open Source Control with no folder open and click <span class="ui">Clone Repository</span>, then paste their address.</p></li>
+    </ol>
+
+    <div class="check">
+      <span class="lab">How you know it worked</span>
+      <p>Open the link in a private or incognito browser window, where you aren't signed in. If you can read it there, so can whoever you send it to.</p>
+    </div>
+  </section>
+
+  <!-- ============ TROUBLESHOOTING ============ -->
+  <section class="part col" id="fix">
+    <div class="part-head"><span class="part-num">Reference</span></div>
+    <h2>When it breaks</h2>
+    <p class="lede">The things that actually go wrong, in rough order of frequency. Paste any of these into your ChatGPT tab if the fix here doesn't land.</p>
+
+    <div class="fixes">
+      <div class="fix">
+        <div>Add a project to use Codex</div>
+        <div>No folder is open, or you opened a single file. <span class="ui">File → Open Folder</span> and pick your project — not your home directory, not the root of the drive.</div>
+      </div>
+      <div class="fix">
+        <div>Codex: 403 Unauthorized / contact your administrator</div>
+        <div>Your ChatGPT account is in an organization workspace where an admin controls Codex access. They have to switch it on; you can't. Everything else in this guide still works.</div>
+      </div>
+      <div class="fix">
+        <div>'git' is not recognized / command not found</div>
+        <div>Git isn't installed, or it is and VS Code hasn't been restarted since. Go back to Part 4 and quit VS Code fully — closing the window isn't enough on a Mac.</div>
+      </div>
+      <div class="fix">
+        <div>Source Control panel is blank</div>
+        <div>No folder is open. <span class="ui">File → Open Folder</span>, not File → Open File.</div>
+      </div>
+      <div class="fix">
+        <div>Nothing appears under Changes</div>
+        <div>The file isn't saved. <kbd class="inline-win">Ctrl</kbd><kbd class="inline-mac">⌘</kbd> <kbd>S</kbd>. A dot beside a tab name means unsaved.</div>
+      </div>
+      <div class="fix">
+        <div>Updates were rejected / push failed</div>
+        <div>Someone changed the GitHub copy since you last looked. Click <span class="ui">Sync Changes</span> to pull theirs in first, then push again.</div>
+      </div>
+      <div class="fix">
+        <div>It's asking for a GitHub username and password</div>
+        <div>GitHub stopped accepting account passwords for this years ago. Cancel, click the <span class="ui">Accounts</span> icon at the bottom left, and sign in with GitHub properly.</div>
+      </div>
+      <div class="fix">
+        <div>Codex rewrote something and I want it back</div>
+        <div>If you've committed at least once: Source Control → hover the file → click <strong>↺</strong> Discard Changes. If you haven't committed yet, that's the lesson — commit first next time.</div>
+      </div>
+    </div>
+
+    <details>
+      <summary>If your school laptop won't let you install anything</summary>
+      <div class="det-body">
+        <p>There's a browser-only path that requires no installation at all. Open any repository on GitHub and press the <kbd>.</kbd> key — a full VS Code opens in the browser tab, editing that repository directly. Commits work; the terminal doesn't.</p>
+        <p>For a version that can actually run code, use <a class="u" href="https://github.com/codespaces" target="_blank" rel="noopener">GitHub Codespaces</a>, which gives a free monthly allowance of hours on a personal account. Both are worth knowing about as a fallback for a classroom set of locked-down machines.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Running this as a workshop: what to check beforehand</summary>
+      <div class="det-body">
+        <p><strong>Codex access.</strong> If your ChatGPT plan is an organization one, confirm with whoever administers it that Codex is enabled for members. A room discovering a 403 together at minute twenty is a bad twenty minutes.</p>
+        <p><strong>Install permissions.</strong> Parts 1 and 4 both install software. Find out in advance whether the machines allow it, and have the browser-only fallback above ready if not.</p>
+        <p><strong>Timing.</strong> Parts 1 and 2 get everyone to a working editor with an assistant in about half an hour — a natural place to break. Parts 3 through 6 are the version control half and run about forty-five minutes.</p>
+      </div>
+    </details>
+  </section>
+
+  <footer class="col">
+    <p>Written for people who have never used any of these tools. Steps and menu names reflect current versions as of September 2026; VS Code updates monthly, so a button occasionally moves.</p>
+    <p>Official documentation: <a class="u" href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github" target="_blank" rel="noopener">GitHub account setup</a> · <a class="u" href="https://code.visualstudio.com/docs/sourcecontrol/intro-to-git" target="_blank" rel="noopener">Git in VS Code</a> · <a class="u" href="https://learn.chatgpt.com/docs/codex/ide" target="_blank" rel="noopener">Codex IDE extension</a> · <a class="u" href="https://developers.openai.com/codex/enterprise/admin-setup" target="_blank" rel="noopener">Codex admin settings</a></p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('root');
+  var bw=document.getElementById('btn-win'), bm=document.getElementById('btn-mac');
+
+  function setOS(os){
+    root.setAttribute('data-os',os);
+    bw.setAttribute('aria-pressed', os==='win'?'true':'false');
+    bm.setAttribute('aria-pressed', os==='mac'?'true':'false');
+    try{ localStorage.setItem('ztsc-os',os); }catch(e){}
+  }
+  bw.addEventListener('click',function(){setOS('win');});
+  bm.addEventListener('click',function(){setOS('mac');});
+
+  var saved=null;
+  try{ saved=localStorage.getItem('ztsc-os'); }catch(e){}
+  if(saved==='win'||saved==='mac'){ setOS(saved); }
+  else {
+    var p=(navigator.platform||'')+' '+(navigator.userAgent||'');
+    setOS(/Mac|iPhone|iPad/i.test(p)?'mac':'win');
+  }
+
+  function fallback(pre,done){
+    try{
+      var r=document.createRange(); r.selectNodeContents(pre);
+      var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      document.execCommand('copy');
+      done();
+    }catch(e){}
+  }
+
+  // expand every collapsible before printing, so nothing is lost on paper
+  var openedForPrint=[];
+  function expandAll(){
+    openedForPrint=[];
+    Array.prototype.forEach.call(document.querySelectorAll('details'),function(d){
+      if(!d.open){ d.open=true; openedForPrint.push(d); }
+    });
+  }
+  function restoreAll(){
+    openedForPrint.forEach(function(d){ d.open=false; });
+    openedForPrint=[];
+  }
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var onchange=function(e){ e.matches?expandAll():restoreAll(); };
+    if(mq.addEventListener){ mq.addEventListener('change',onchange); }
+    else if(mq.addListener){ mq.addListener(onchange); }
+  }
+  window.addEventListener('beforeprint',expandAll);
+  window.addEventListener('afterprint',restoreAll);
+
+  Array.prototype.forEach.call(document.querySelectorAll('.copy'),function(btn){
+    btn.addEventListener('click',function(){
+      var pre=btn.parentNode.querySelector('pre');
+      var text=pre.textContent;
+      var done=function(){
+        btn.textContent='Copied';
+        btn.setAttribute('data-done','1');
+        setTimeout(function(){btn.textContent='Copy';btn.removeAttribute('data-done');},1600);
+      };
+      try{
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(done,function(){fallback(pre,done);});
+        } else { fallback(pre,done); }
+      }catch(e){ fallback(pre,done); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
